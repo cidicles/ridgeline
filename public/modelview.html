@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ridgeline model viewer</title>
+<style>
+  body { margin: 0; background: #20242b; color: #cfd6e0; font: 13px system-ui, sans-serif; overflow: hidden; }
+  #ui { position: fixed; top: 8px; left: 8px; z-index: 2; background: #0008; padding: 6px 10px; border-radius: 4px; }
+  #ui select, #ui label { margin-right: 10px; }
+</style>
+</head>
+<body>
+<div id="ui">
+  <select id="pick"></select>
+  <label><input type="checkbox" id="spin" checked> spin</label>
+  <label>clip <select id="clip"><option value="">none</option></select></label>
+  <label>rig <select id="rig"><option value="">off</option><option>idle</option><option>walk</option><option>run</option><option>ski</option><option>air</option><option>jet</option></select></label>
+  <label>pitch <input type="range" id="pitch" min="-1.2" max="1.2" step="0.05" value="0"></label>
+  <span id="info"></span>
+</div>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+// Dev page: look at the generated models as the game normalises them.
+// ?id=skiff&view=side|top|front&spin=0 for fixed screenshots. The cyan arrow points -Z (forward).
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { ModelLibrary, CharacterRig } from './js/assets3d.js';
+
+const q = new URLSearchParams(location.search);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x20242b);
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+const sun = new THREE.DirectionalLight(0xffffff, 1.5);
+sun.position.set(3, 6, 4);
+scene.add(sun, new THREE.GridHelper(10, 20, 0x556070, 0x343a44));
+scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), new THREE.Vector3(0, 0.02, 0), 3, 0x30e0ff, 0.3, 0.15));
+const ref = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.2, 0.3), new THREE.MeshBasicMaterial({ color: 0xff4060, wireframe: true }));
+ref.position.set(-2, 1.1, 0);
+scene.add(ref);
+
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.01, 100);
+const controls = new OrbitControls(camera, renderer.domElement);
+const views = { side: [6, 1.5, 0], top: [0, 7, 0.01], front: [0, 1.5, -6], three: [4, 3, -4] };
+// ?dist=1.5 zooms in (fraction of the default distance), aiming lower for small models
+const zoom = +(q.get('dist') || 1);
+camera.position.set(...(views[q.get('view')] || views.three).map((v, i) => (i === 1 ? v * zoom : v * zoom)));
+controls.target.set(0, zoom < 1 ? 0.25 : 0.8, 0);
+controls.update();
+
+const lib = new ModelLibrary('./');
+await lib.ready;
+const pick = document.getElementById('pick'), clipSel = document.getElementById('clip');
+for (const id of Object.keys(lib.models)) pick.add(new Option(id, id));
+if (q.get('id')) pick.value = q.get('id');
+document.getElementById('spin').checked = q.get('spin') !== '0';
+
+let current = null, mixer = null, rig = null;
+const rigSel = document.getElementById('rig'), pitchIn = document.getElementById('pitch');
+if (q.get('rig')) rigSel.value = q.get('rig');
+if (q.get('pitch')) pitchIn.value = q.get('pitch');
+const hue = q.get('hue') ? +q.get('hue') : undefined;
+function show() {
+  if (current) scene.remove(current);
+  current = lib.instance(pick.value, { hue });
+  rig = null;
+  if (rigSel.value && current.userData.generated.clips.walk) {
+    const w = +(q.get('weapon') || 0), ids = ['disc_launcher', 'chaingun', 'grenade_launcher', 'plasma_rifle', 'mortar', 'laser_rifle'];
+    const makeWeapon = (i) => { const gun = lib.instance(ids[i], { hue }); if (gun) gun.position.set(0, -0.13, -0.2 * lib.dims(ids[i])[2]); return gun; };
+    rig = new CharacterRig(current, { flameMaterial: new THREE.MeshBasicMaterial({ color: 0x9fd8ff, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }), makeWeapon });
+    rig.weaponId = w;
+  }
+  scene.add(current);
+  const g = current.userData.generated;
+  clipSel.length = 1;
+  for (const name of Object.keys(g.clips)) clipSel.add(new Option(name, name));
+  if (q.get('clip')) clipSel.value = q.get('clip');
+  playClip();
+  const box = new THREE.Box3().setFromObject(current);
+  const s = box.getSize(new THREE.Vector3());
+  document.getElementById('info').textContent = `size ${s.x.toFixed(2)} x ${s.y.toFixed(2)} x ${s.z.toFixed(2)} m`;
+}
+function playClip() {
+  mixer = null;
+  const g = current.userData.generated;
+  if (clipSel.value && g.clips[clipSel.value]) {
+    mixer = new THREE.AnimationMixer(g.inner);
+    mixer.clipAction(g.clips[clipSel.value]).play();
+  }
+}
+pick.onchange = show;
+rigSel.onchange = show;
+clipSel.onchange = playClip;
+show();
+
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => {
+  const dt = clock.getDelta();
+  if (document.getElementById('spin').checked) current.rotation.y += dt * 0.6;
+  mixer?.update(dt);
+  window.__rig = rig;
+  if (rig) {
+    const st = { idle: [0, 1, 0, 0], walk: [2, 1, 0, 0], run: [8, 1, 0, 0], ski: [20, 1, 1, 0], air: [10, 0, 0, 0], jet: [10, 0, 0, 1] }[rigSel.value];
+    // a fixed step converges the pose smoothing even in a one-frame screenshot
+    for (let i = 0; i < (q.get('settle') ? 30 : 1); i++) rig.update(q.get('settle') ? 1 / 30 : dt, { speed: st[0], onGround: !!st[1], skiing: !!st[2], jetting: !!st[3], pitch: +pitchIn.value, weapon: rig.weaponId });
+  }
+  renderer.render(scene, camera);
+});
+window.__ready = true;
+</script>
+</body>
+</html>

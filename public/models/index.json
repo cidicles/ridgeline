@@ -1,0 +1,125 @@
+{
+  "soldier_medium_ember": {
+    "kind": "character",
+    "file": "soldier_medium_ember.glb",
+    "rigged": true,
+    "anims": {
+      "run": "soldier_medium_ember_run.glb",
+      "walk": "soldier_medium_ember_walk.glb"
+    }
+  },
+  "skiff": {
+    "kind": "vehicle",
+    "file": "skiff.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "disc_launcher": {
+    "kind": "weapon",
+    "file": "disc_launcher.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "soldier_light_ember": {
+    "kind": "character",
+    "file": "soldier_light_ember.glb",
+    "rigged": true,
+    "anims": {
+      "run": "soldier_light_ember_run.glb",
+      "walk": "soldier_light_ember_walk.glb"
+    }
+  },
+  "soldier_heavy_ember": {
+    "kind": "character",
+    "file": "soldier_heavy_ember.glb",
+    "rigged": true,
+    "anims": {
+      "run": "soldier_heavy_ember_run.glb",
+      "walk": "soldier_heavy_ember_walk.glb"
+    }
+  },
+  "chaingun": {
+    "kind": "weapon",
+    "file": "chaingun.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "grenade_launcher": {
+    "kind": "weapon",
+    "file": "grenade_launcher.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "plasma_rifle": {
+    "kind": "weapon",
+    "file": "plasma_rifle.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "mortar": {
+    "kind": "weapon",
+    "file": "mortar.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "laser_rifle": {
+    "kind": "weapon",
+    "file": "laser_rifle.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "generator": {
+    "kind": "prop",
+    "file": "generator.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "turret_head": {
+    "kind": "prop",
+    "file": "turret_head.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "supply_crate": {
+    "kind": "prop",
+    "file": "supply_crate.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "pine_tree": {
+    "kind": "scenery",
+    "file": "pine_tree.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "snow_pine": {
+    "kind": "scenery",
+    "file": "snow_pine.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "broadleaf_tree": {
+    "kind": "scenery",
+    "file": "broadleaf_tree.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "dead_tree": {
+    "kind": "scenery",
+    "file": "dead_tree.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "rock_spire": {
+    "kind": "scenery",
+    "file": "rock_spire.glb",
+    "rigged": false,
+    "anims": {}
+  },
+  "boulder": {
+    "kind": "scenery",
+    "file": "boulder.glb",
+    "rigged": false,
+    "anims": {}
+  }
+}

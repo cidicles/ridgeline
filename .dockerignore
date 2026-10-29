@@ -1,0 +1,5 @@
+**/.env*
+*.log
+README.md
+aislop.json
+aislop-thumb.jpg

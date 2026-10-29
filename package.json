@@ -1,0 +1,16 @@
+{
+  "name": "ridgeline",
+  "version": "0.1.0",
+  "description": "Jetpack-skiing team CTF shooter for the browser",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.5.1"
+  }
+}

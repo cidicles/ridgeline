@@ -1,0 +1,25 @@
+{
+  "slug": "ridgeline",
+  "name": "Ridgeline",
+  "tagline": "A jetpack-skiing team capture-the-flag shooter in the browser. Ski down slopes without losing speed, jet over ridges, take down the enemy generator to knock out their turrets, and run their flag home. Open a game from the lobby and share the invite link; bots fill any empty slots.",
+  "tags": [
+    "fps",
+    "multiplayer",
+    "ctf",
+    "game"
+  ],
+  "created": "2026-10-27",
+  "type": "docker",
+  "files": [
+    "Dockerfile",
+    ".dockerignore",
+    "package.json",
+    "node_modules/ws",
+    "server.js",
+    "server",
+    "shared",
+    "public"
+  ],
+  "memory": "128m",
+  "thumbnail": "aislop-thumb.jpg"
+}

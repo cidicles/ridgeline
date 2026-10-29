@@ -1,0 +1,445 @@
+{
+  "fire_disc": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 1
+  },
+  "fire_chaingun": {
+    "variants": [
+      0,
+      1,
+      2
+    ],
+    "loop": false,
+    "gain": 0.55
+  },
+  "fire_grenade": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.9
+  },
+  "fire_plasma": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "fire_mortar": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 1
+  },
+  "fire_laser": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "fire_turret": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "throw_grenade": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.7
+  },
+  "dry_fire": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.6
+  },
+  "weapon_switch": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.5
+  },
+  "boom_disc": {
+    "variants": [
+      0,
+      1,
+      2
+    ],
+    "loop": false,
+    "gain": 1
+  },
+  "boom_grenade": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 1
+  },
+  "boom_mortar": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 1.1
+  },
+  "boom_plasma": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.85
+  },
+  "impact_bullet": {
+    "variants": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "loop": false,
+    "gain": 0.45
+  },
+  "boom_distant": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "vehicle_explode": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 1.1
+  },
+  "hurt": {
+    "variants": [
+      0,
+      1,
+      2
+    ],
+    "loop": false,
+    "gain": 0.7
+  },
+  "gib": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.9
+  },
+  "body_fall": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "step_light": {
+    "variants": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "loop": false,
+    "gain": 0.45
+  },
+  "step_heavy": {
+    "variants": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "loop": false,
+    "gain": 0.55
+  },
+  "land": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "jump": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.5
+  },
+  "splash": {
+    "variants": [
+      0,
+      1
+    ],
+    "loop": false,
+    "gain": 0.9
+  },
+  "lava_hiss": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.9
+  },
+  "heartbeat": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.7
+  },
+  "loop_jet": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.55
+  },
+  "loop_ski": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.4
+  },
+  "loop_wind_speed": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.45
+  },
+  "loop_skiff": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.6
+  },
+  "loop_repair": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.4
+  },
+  "loop_generator": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.4
+  },
+  "gen_down": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 1
+  },
+  "station": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "pickup": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.6
+  },
+  "kit": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.7
+  },
+  "spawn": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.7
+  },
+  "board": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.7
+  },
+  "flag_grab": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.75
+  },
+  "flag_lost": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.75
+  },
+  "flag_return": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.7
+  },
+  "flag_drop": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.7
+  },
+  "cap_us": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "cap_them": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "win": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "lose": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.8
+  },
+  "hitmarker": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.5
+  },
+  "kill": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.6
+  },
+  "radio": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.5
+  },
+  "ping": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.55
+  },
+  "callout": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.6
+  },
+  "ui_click": {
+    "variants": [
+      0
+    ],
+    "loop": false,
+    "gain": 0.4
+  },
+  "amb_meadow": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.28
+  },
+  "amb_desert": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.28
+  },
+  "amb_snow": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.3
+  },
+  "amb_ash": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.26
+  },
+  "amb_lake": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.45
+  },
+  "amb_lava": {
+    "variants": [
+      0
+    ],
+    "loop": true,
+    "gain": 0.5
+  }
+}

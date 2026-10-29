@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ridgeline</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b0f14'/%3E%3Cpath d='M3 25 L12 11 L17 18 L21 13 L29 25 Z' fill='%233ac8ff'/%3E%3Cpath d='M12 11 L15 15.5 L12 17 L9.5 15 Z' fill='%23ff7a2a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #9fffb6; --ember: #ff7a2a; --glacier: #3ac8ff; --ink: #e8eef5; --panel: rgba(8, 12, 18, 0.82); }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0b0f14; color: var(--ink); font-family: 'Share Tech Mono', monospace; }
+  canvas { display: block; position: fixed; inset: 0; }
+  #hud { pointer-events: none; }
+  #menu { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, rgba(5,8,12,0.35), rgba(5,8,12,0.75)); }
+  .panel { width: min(560px, calc(100vw - 32px)); background: var(--panel); border: 1px solid rgba(159,255,182,0.25); padding: 28px 28px 22px; box-sizing: border-box; }
+  h1 { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 64px; letter-spacing: 0.18em; margin: 0; line-height: 1; }
+  h1 span.a { color: var(--ember); } h1 span.b { color: var(--glacier); }
+  .tag { color: rgba(232,238,245,0.6); margin: 6px 0 22px; letter-spacing: 0.08em; }
+  label { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 10px 0; font-size: 14px; }
+  input[type=text] { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: var(--ink); font: inherit; padding: 8px 10px; width: 240px; }
+  input[type=range] { width: 240px; accent-color: var(--accent); }
+  input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); }
+  button { margin-top: 16px; width: 100%; padding: 14px; font: 700 20px 'Rajdhani', sans-serif; letter-spacing: 0.2em; background: var(--accent); color: #0b0f14; border: 0; cursor: pointer; }
+  button:hover { filter: brightness(1.1); }
+  .controls { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin-top: 20px; font-size: 13px; color: rgba(232,238,245,0.75); }
+  .controls b { color: var(--accent); font-weight: normal; }
+  #status { margin-top: 10px; font-size: 13px; color: #ffb08a; min-height: 1em; }
+  #mapname { color: var(--accent); }
+  .row { display: flex; gap: 10px; }
+  .row button { flex: 1; }
+  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  #loadout { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(5,8,12,0.6); }
+  .panel.wide { width: min(760px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow-y: auto; }
+  h2 { font: 700 36px 'Rajdhani', sans-serif; letter-spacing: 0.15em; margin: 0; }
+  .sub { margin: 18px 0 8px; color: rgba(232,238,245,0.8); display: flex; justify-content: space-between; }
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+  .grid3 button { margin: 0; padding: 10px 12px; text-align: left; font: 13px 'Share Tech Mono', monospace; letter-spacing: 0; background: rgba(255,255,255,0.05); color: var(--ink); border: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; gap: 3px; }
+  .grid3 button b { font: 700 18px 'Rajdhani', sans-serif; letter-spacing: 0.05em; }
+  .grid3 button span { color: rgba(232,238,245,0.65); font-size: 12px; }
+  .grid3 button.sel { border-color: var(--accent); background: rgba(159,255,182,0.12); }
+  .grid3 button.off { opacity: 0.35; cursor: not-allowed; }
+  .panel.lobby { width: min(1040px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow-y: auto; display: grid; grid-template-columns: minmax(260px, 340px) 1fr; gap: 28px; }
+  @media (max-width: 760px) { .panel.lobby { grid-template-columns: 1fr; } }
+  .panel.lobby h1 { font-size: 48px; }
+  .col.left label input[type=text] { width: 170px; }
+  .col.left input[type=range] { width: 150px; }
+  details { margin: 10px 0; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; }
+  summary { cursor: pointer; color: var(--accent); font-size: 14px; }
+  .head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .head h2 { flex: 1; font-size: 30px; }
+  .muted { color: rgba(232,238,245,0.55); font-size: 13px; }
+  button.small { width: auto; margin: 0; padding: 6px 12px; font-size: 14px; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .rooms-wrap { min-height: 220px; max-height: 340px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.12); }
+  #rooms { width: 100%; border-collapse: collapse; font-size: 13px; }
+  #rooms th { text-align: left; font-weight: normal; color: rgba(232,238,245,0.55); padding: 8px 10px; position: sticky; top: 0; background: #0d1218; }
+  #rooms td { padding: 9px 10px; border-top: 1px solid rgba(255,255,255,0.06); }
+  #rooms tbody tr { cursor: pointer; }
+  #rooms tbody tr:hover { background: rgba(255,255,255,0.05); }
+  #rooms tbody tr.sel { background: rgba(159,255,182,0.14); }
+  #rooms .tagline { display: block; color: rgba(232,238,245,0.5); font-size: 11px; margin-top: 2px; }
+  #rooms-empty { padding: 16px; }
+  select { background: #141a22; border: 1px solid rgba(255,255,255,0.18); color: var(--ink); font: inherit; padding: 7px 8px; width: 240px; }
+  .val { display: flex; align-items: center; gap: 10px; }
+  .val input[type=range] { width: 190px; }
+  output { width: 24px; text-align: right; color: var(--accent); }
+  #chat { display: none; position: fixed; left: 16px; bottom: 180px; width: 360px; background: rgba(8,12,18,0.85); border: 1px solid rgba(159,255,182,0.4); color: var(--ink); font: 14px 'Share Tech Mono', monospace; padding: 8px; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<canvas id="hud"></canvas>
+<input id="chat" type="text" maxlength="140" autocomplete="off">
+
+<div id="menu">
+  <div class="panel lobby">
+    <div class="col left">
+      <h1><span class="a">RIDGE</span><span class="b">LINE</span></h1>
+      <div class="tag">Jetpack skiing capture-the-flag</div>
+      <label>Callsign <input id="name" type="text" maxlength="16"></label>
+      <details>
+        <summary>Settings</summary>
+        <label>Mouse sensitivity <input id="sens" type="range" min="0.5" max="6" step="0.1"></label>
+        <label>Field of view <input id="fov" type="range" min="70" max="110" step="1"></label>
+        <label>Volume <input id="vol" type="range" min="0" max="1" step="0.05"></label>
+        <label>Invert mouse Y <input id="invert" type="checkbox"></label>
+        <label>Blood and gibs <input id="gore" type="checkbox"></label>
+        <label>Graphics <select id="quality"><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+        <label>Music volume <input id="music" type="range" min="0" max="1" step="0.05"></label>
+        <label>Show FPS <input id="showfps" type="checkbox"></label>
+      </details>
+      <details>
+        <summary>Controls</summary>
+        <div class="controls">
+          <b>WASD</b><span>Move</span>
+          <b>Mouse</b><span>Aim · Left click fire</span>
+          <b>Right click / Shift</b><span>Jetpack (burns energy)</span>
+          <b>Space</b><span>Jump · hold to ski (frictionless)</span>
+          <b>1–5 / Q / Wheel</b><span>Select weapon</span>
+          <b>B</b><span>Loadout (armor, weapons, pack)</span>
+          <b>E</b><span>Board / leave a skiff</span>
+          <b>Hold F</b><span>Repair generator or turrets</span>
+          <b>G / H</b><span>Grenade / repair kit</span>
+          <b>V</b><span>Third person</span>
+          <b>Tab</b><span>Scores</span>
+          <b>T / Y</b><span>Chat / team chat</span>
+          <b>Z</b><span>Quick chat &amp; bot orders</span>
+          <b>Middle mouse / X</b><span>Ping a location</span>
+          <b>F1</b><span>Controls overlay</span>
+          <b>M / K</b><span>Switch team / respawn</span>
+        </div>
+      </details>
+      <button id="menu-loadout" class="ghost">LOADOUT</button>
+    </div>
+
+    <div class="col right">
+      <!-- Server browser -->
+      <div id="browse-view">
+        <div class="head"><h2>Games</h2><span id="ping" class="muted"></span><button id="refresh" class="small ghost">Refresh</button></div>
+        <div class="rooms-wrap">
+          <table id="rooms">
+            <thead><tr><th>Game</th><th>Map</th><th>Players</th><th>Score</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div id="rooms-empty" class="muted">Loading games…</div>
+        </div>
+        <label id="pass-row" style="display:none">Password <input id="join-pass" type="password" maxlength="24"></label>
+        <div class="row">
+          <button id="join" disabled>JOIN</button>
+          <button id="create-open" class="ghost">CREATE GAME</button>
+        </div>
+      </div>
+
+      <!-- Create game -->
+      <div id="create-view" style="display:none">
+        <div class="head"><h2>Create game</h2></div>
+        <label>Name <input id="c-name" type="text" maxlength="28"></label>
+        <label>Starting map <select id="c-map"></select></label>
+        <label>Bots per team <span class="val"><input id="c-bots" type="range" min="0" max="8" step="1" value="4"><output id="c-bots-v">4</output></span></label>
+        <label>Captures to win <span class="val"><input id="c-caps" type="range" min="1" max="10" step="1" value="5"><output id="c-caps-v">5</output></span></label>
+        <label>Max players <span class="val"><input id="c-max" type="range" min="2" max="32" step="1" value="16"><output id="c-max-v">16</output></span></label>
+        <label>Time limit (min) <span class="val"><input id="c-time" type="range" min="5" max="60" step="5" value="20"><output id="c-time-v">20</output></span></label>
+        <label>Bot difficulty <select id="c-skill"><option value="easy">Easy</option><option value="normal" selected>Normal</option><option value="hard">Hard</option></select></label>
+        <label>Password <input id="c-pass" type="text" maxlength="24" placeholder="optional"></label>
+        <div class="row">
+          <button id="create">CREATE &amp; JOIN</button>
+          <button id="create-back" class="ghost">BACK</button>
+        </div>
+      </div>
+
+      <!-- In-game pause -->
+      <div id="pause-view" style="display:none">
+        <div class="head"><h2>Paused</h2></div>
+        <div class="tag"><span id="room-name">—</span> · <span id="mapname">—</span></div>
+        <button id="deploy">RESUME</button>
+        <div class="row">
+          <button id="invite" class="ghost">COPY INVITE LINK</button>
+          <button id="leave" class="ghost">LEAVE GAME</button>
+        </div>
+      </div>
+      <div id="status"></div>
+    </div>
+  </div>
+</div>
+
+<div id="loadout">
+  <div class="panel wide">
+    <h2>Loadout</h2>
+    <div class="tag">Applies at your next spawn, or immediately on a powered inventory station in your bunker.</div>
+    <div id="lo-armors" class="grid3"></div>
+    <div class="sub">Weapons <span id="lo-slots"></span></div>
+    <div id="lo-weapons" class="grid3"></div>
+    <div class="sub">Pack</div>
+    <div id="lo-packs" class="grid3"></div>
+    <div class="row">
+      <button id="lo-save">SAVE</button>
+      <button id="lo-cancel" class="ghost">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

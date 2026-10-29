@@ -1,0 +1,19 @@
+{
+  "grass": "grass.webp",
+  "meadow_dirt": "meadow_dirt.webp",
+  "cliff_rock": "cliff_rock.webp",
+  "snow": "snow.webp",
+  "packed_snow": "packed_snow.webp",
+  "granite": "granite.webp",
+  "sand": "sand.webp",
+  "red_earth": "red_earth.webp",
+  "pale_sand": "pale_sand.webp",
+  "sandstone": "sandstone.webp",
+  "ash": "ash.webp",
+  "gravel": "gravel.webp",
+  "pale_ash": "pale_ash.webp",
+  "basalt": "basalt.webp",
+  "hull_panels": "hull_panels.webp",
+  "concrete": "concrete.webp",
+  "cargo_crate": "cargo_crate.webp"
+}
